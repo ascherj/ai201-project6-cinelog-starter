@@ -20,13 +20,14 @@ class NotOnWatchlistError(Exception):
     pass
 
 
-def add_to_watchlist(user_id, film_id):
+def add_to_watchlist(user_id, film_id, public=True):
     """
     Add a film to a user's watchlist (i.e., save it to watch later).
 
     Args:
         user_id (str): UUID of the user.
-        film_id (int): ID of the film. (Note: integer — pre-refactor)
+        film_id (str): UUID of the film.
+        public (bool): Whether the entry is publicly visible. Defaults to True.
 
     Returns:
         WatchlistEntry: The newly created entry.
@@ -47,7 +48,7 @@ def add_to_watchlist(user_id, film_id):
             f"Film '{film_id}' is already on this user's watchlist"
         )
 
-    entry = WatchlistEntry(user_id=user_id, film_id=film_id)
+    entry = WatchlistEntry(user_id=user_id, film_id=film_id, public=public)
     db.session.add(entry)
     db.session.commit()
     return entry
@@ -59,7 +60,7 @@ def remove_from_watchlist(user_id, film_id):
 
     Args:
         user_id (str): UUID of the user.
-        film_id (int): ID of the film.
+        film_id (str): UUID of the film.
 
     Returns:
         bool: True if the entry was removed.
@@ -82,13 +83,13 @@ def remove_from_watchlist(user_id, film_id):
 
 def get_watchlist(user_id):
     """
-    Return all films on a user's watchlist.
+    Return all films on a user's watchlist, sorted alphabetically by title.
 
     Args:
         user_id (str): UUID of the user.
 
     Returns:
-        list[dict]: List of film dicts with watchlist metadata attached.
+        list[dict]: List of film dicts with watchlist metadata (date_added, public) attached.
     """
     entries = (
         WatchlistEntry.query
