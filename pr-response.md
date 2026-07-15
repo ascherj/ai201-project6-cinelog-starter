@@ -130,4 +130,16 @@ pytest tests/ -v
 # Expected: 6/6 passing
 ```
 
-<!-- Screenshot of git log --oneline to be added after interactive rebase in Milestone 4 -->
+## Commit History (`git log --oneline`)
+
+```
+73a3793 chore: ignore instruct.md
+1aaa459 docs: add pr-response.md with design decisions and comment responses
+665974c test: add tests for nonexistent film and duplicate in add_to_watchlist
+028b282 fix: add deduplication check to prevent duplicate watchlist entries
+0fd90ae fix: rename save_to_watchlist to add_to_watchlist per naming convention
+fc6e1be fix: use db.session.get for film lookup in watchlist and collection services
+6669db3 feat: add WatchlistEntry model and add_to_watchlist endpoint
+```
+
+All 7 commits follow conventional commit format. No merge commits — branch was rebased on the UUID-refactored `main`.
